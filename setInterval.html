@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+</head>
+<body>
+    <h1>Pranjal Nanda and Code Mania</h1>
+    <button class="one">Start</button>
+    <button class="two">Stop</button>
+    <script>
+        let start=document.querySelector('.one');
+        let stop=document.querySelector('.two');
+        let colorchanger;
+function colorgenerator()
+{
+    let hexstream="0123456789ABCDEF";
+    let color="#";
+    for(let i=0;i<6;i++)
+{
+    color+=hexstream[Math.floor(Math.random()*16)];
+}
+return color;
+}
+start.addEventListener('click',function(){
+    if(colorchanger==null)
+{
+  colorchanger= setInterval(function(){
+        document.body.style.backgroundColor=colorgenerator();
+    },1000)
+}
+    stop.addEventListener('click',function(){
+clearInterval(colorchanger);
+colorchanger=null;
+});
+});
+
+  
+    </script>
+</body>
+</html>

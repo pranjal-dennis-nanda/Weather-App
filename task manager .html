@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>task manager</title>
+   <style>
+    *{
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+    .main{
+        height: 100px;
+        width: 100vw;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+    .ticket{
+        height: 200px;
+        width: 200px;
+        border: 2px solid black;
+        margin-top: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content:center;
+      align-content:flex-start;
+      padding: 30px;
+      gap: 30px;
+      border-radius: 10px;
+      overflow: scroll;
+      }
+      .container{
+        display: flex;
+        justify-content: space-around;
+flex-wrap: wrap;
+flex-direction: row;
+      }
+      button{
+        height: 50px;
+        width:100px;
+      }
+   </style>
+</head>
+<body>
+    <div class="main">
+        <input type="text" class="one">
+        <input type="text" class="two">
+        <input type="text" class="three">
+        <button class="btn">toggle on</button>
+        <button class="btn1">Add</button>
+    </div>
+    <div class="container">
+
+ 
+    <!-- <div class="ticket">
+        <li>one</li>
+        <li>two</li>
+        <li>three</li>
+    </div> -->
+ 
+</div>
+<script>
+    let inputone=document.querySelector('.one');
+    let inputtwo=document.querySelector('.two');
+    let inputthree=document.querySelector('.three');
+    let togglebutton=document.querySelector('.btn');
+    let container=document.querySelector('.container');
+    let addbutton=document.querySelector('.btn1');
+    let isred=true;
+    let task=[];
+    let alldata=localStorage.getItem('taskarray');
+    if(alldata!=null)
+{
+    let ogdata=JSON.parse(alldata);
+    task=ogdata;
+    maketodo();
+}
+  addbutton.addEventListener('click',function(){
+    let value1=inputone.value;
+    let value2=inputtwo.value;
+    let value3=inputthree.value;
+    if(value1==""||value2==""||value3=="")
+  {
+    alert("please dont leave any field empty");
+    return;
+  }
+  let taskobj={
+    id:Date.now(),
+    text1:value1,
+    text2:value2,
+    text3:value3
+  }
+  task.push(taskobj);
+  localStorage.setItem('taskarray',JSON.stringify(task));
+  maketodo();
+  inputone.value="";
+  inputtwo.value="";
+  inputthree.value=""
+  });
+  
+  function maketodo()
+  {
+    container.innerHTML="";
+    for(let i=0;i<task.length;i++)
+  {
+    let {id,text1,text2,text3}=task[i];
+    let element=document.createElement('div');
+    element.innerHTML=` <li>${text1}</li>
+        <li>${text2}</li>
+        <li>${text3}</li>
+        <span class="delete"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" fill="currentColor"><path d="M7 6V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7ZM13.4142 13.9997L15.182 12.232L13.7678 10.8178L12 12.5855L10.2322 10.8178L8.81802 12.232L10.5858 13.9997L8.81802 15.7675L10.2322 17.1817L12 15.4139L13.7678 17.1817L15.182 15.7675L13.4142 13.9997ZM9 4V6H15V4H9Z"></path></svg></span>`;
+        let delbtn=element.querySelector('.delete');
+        delbtn.addEventListener('click',function(){
+            if(!isred)
+        {
+let filteredarray=task.filter(function(taskobj)
+{
+    return taskobj.id!=id;
+})
+task=filteredarray;
+localStorage.setItem('taskarray',JSON.stringify(task));
+container.removeChild(element);
+        }
+    
+
+else{
+    alert("please switch to green to add items");
+    throw new Error("button not toggled to green");
+}
+});
+        element.classList.add('ticket');
+        container.appendChild(element);
+  }
+ 
+  }
+  togglebutton.style.backgroundColor='red';
+  togglebutton.addEventListener('click',function()
+{
+    isred=!isred;
+    togglebutton.style.backgroundColor=isred?'red':'green';
+   togglebutton.textContent=isred?'toggle of':'toggle on';
+  
+});
+
+
+</script>
+</body>
+</html>
